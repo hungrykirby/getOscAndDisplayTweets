@@ -1,11 +1,6 @@
-/**
- * oscP5sendreceive by andreas schlegel
- * example shows how to send and receive osc messages.
- * oscP5 website at http://www.sojamo.de/oscP5
- */
-
 import oscP5.*;
 import netP5.*;
+import java.io.UnsupportedEncodingException;
 
 OscP5 oscP5;
 NetAddress myRemoteLocation;
@@ -28,9 +23,21 @@ void draw() {
 
 
 void oscEvent(OscMessage theOscMessage) {
-  print("### received an osc message.");
-  print(" addrpattern: "+theOscMessage.addrPattern());
-  println(" typetag: "+theOscMessage.typetag());
+  byte[] bytes = theOscMessage.getBytes();
+  try {
+      String str = new String(bytes, "UTF-8");
+      String typeTagStr = theOscMessage.typetag();
+      str = str.substring(str.indexOf(typeTagStr) + typeTagStr.length());
+ 
+      //コンソールにMax6から送った日本語のメッセージが表示される
+      print("### received an osc message.");
+      print(" addrpattern: "+theOscMessage.addrPattern());
+      println(" typetag: "+ str);
+ 
+    }
+    catch(UnsupportedEncodingException e) {
+        e.printStackTrace();   
+    };
 
-  theOscMessage.print();
+  //theOscMessage.print();
 }
