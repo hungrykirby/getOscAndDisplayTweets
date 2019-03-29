@@ -26,7 +26,7 @@ class RectText {
   
   RectText(){
     tS = 48;
-    PFont font = createFont("Noto Sans CJK JP", tS);
+    PFont font = createFont("Noto Sans CJK JP", 48);
     textFont(font);
     textAlign( LEFT, TOP );    
     th = textAscent() + textDescent();
@@ -52,6 +52,7 @@ class RectText {
     textSize(tS);
     th = textAscent() + textDescent();
     le = 0.5;
+    textLeading(th+le);
   }
   
   void setColor(color _fontColor, color _backgroundColor, color _borderColor){
@@ -95,6 +96,10 @@ class RectText {
     stroke(borderColor);
     strokeWeight(sW);
     fill(backgroundColor);
+    textSize(tS);
+    th = textAscent() + textDescent();
+    le = 0.5;
+    textLeading(th+le);
     rect(xPos - paddingRight, yPos - paddingTop, maxWidth + paddingRight + paddingLeft, (th+le)*(numLines+kaigyoCount) + paddingTop + paddingButtom);
     noStroke();
     fill(fontColor);

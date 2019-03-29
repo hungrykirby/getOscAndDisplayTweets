@@ -34,13 +34,15 @@ void setup() {
     tweets[i] = new RectText();
     tweets[i].setColor(color(30), color(random(230, 255), random(230, 255), random(230, 255), 160), baseColor);
     tweets[i].setup(pT, pR, pB, pL);/*float pT, float pR, float pB, float pL*/
+    tweets[i].setTextSize(48);
   }
   
   title = new RectText();
   title.setColor(color(255), baseColor, baseColor);
   title.setup(30, 30, 30, 30);
   title.setTextSize(96); 
-  title.setText("#ほしまるまつ");
+  //title.setText("#ほしまるまつ");
+  title.setText("プレミアムフライデー");
 }
 
 
@@ -52,19 +54,31 @@ void draw() {
   int winOfRect = 30;
   int intervalOfRectAndRect = 20;
   
+  int xLine = 150;
+  int wLine = 10;
+  
+  title.setTextSize(96);
   title.update(1600);
-  title.draw(50, 80);
+  float titleY = title.draw(50, 80);
+  
+  fill(baseColor);
+  rect(xLine, titleY - 30, wLine, height - titleY + 30);
   
   
   for(int i = 0; i < tweetsNum; i++){
     float tmpY = y;
     tweets[i].update(wTextArea);
     tweets[i].forceSetMaxW(wTextArea);
+    fill(baseColor);
+    ellipse(xLine + wLine/2, tmpY + 20, 100, 100);
+    tweets[i].setTextSize(48);
     y = tweets[i].draw(xPos, y);
     int sW = tweets[i].getStrokeWeight();
     fill(baseColor);
     //ellipse(xPos - pR, tmpY - pB, 10, 10);
     rect(xPos - winOfRect - pR, tmpY - pB - sW, winOfRect, y - tmpY + sW*2);
+    
+    triangle(xPos - winOfRect - pR, tmpY - pB + 20, xPos - winOfRect - pR, y - pB - 20, xLine + 80, tmpY + pB);
     
     y += intervalOfRectAndRect;
   }
@@ -86,6 +100,7 @@ void oscEvent(OscMessage theOscMessage) {
           tweets[i].setText(tweets[i - 1].getText());
           tweets[i].setColor(tweets[i - 1].fontColor, tweets[i - 1].backgroundColor, tweets[i - 1].borderColor);
         }
+        tweets[0].setTextSize(48);
         tweets[0].setText(t);
         tweets[0].setColor(color(30), color(random(230, 255), random(230, 255), random(230, 255), 160), baseColor);
       }
