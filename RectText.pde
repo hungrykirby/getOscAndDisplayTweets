@@ -20,9 +20,13 @@ class RectText {
   boolean isDraw;
   
   int kaigyoCount;
+  int sW = 2;
+  
+  int tS;
   
   RectText(){
-    PFont font = createFont("Noto Sans CJK JP", 48);
+    tS = 48;
+    PFont font = createFont("Noto Sans CJK JP", tS);
     textFont(font);
     textAlign( LEFT, TOP );    
     th = textAscent() + textDescent();
@@ -43,6 +47,13 @@ class RectText {
     t = _t.replace("\n\n", "\n");
   }
   
+  void setTextSize(int _ts){
+    tS = _ts;
+    textSize(tS);
+    th = textAscent() + textDescent();
+    le = 0.5;
+  }
+  
   void setColor(color _fontColor, color _backgroundColor, color _borderColor){
     /*色を定義する
     第一引数が文字色
@@ -56,6 +67,10 @@ class RectText {
   String getText(){
     /*文章を返す関数*/
     return t;
+  }
+  
+  int getStrokeWeight(){
+    return sW;
   }
   
   void setup(float pT, float pR, float pB, float pL){
@@ -78,6 +93,7 @@ class RectText {
   float draw(float x, float y){ /*xとyを開始点として文字を書く*/
     xPos = x; yPos = y;
     stroke(borderColor);
+    strokeWeight(sW);
     fill(backgroundColor);
     rect(xPos - paddingRight, yPos - paddingTop, maxWidth + paddingRight + paddingLeft, (th+le)*(numLines+kaigyoCount) + paddingTop + paddingButtom);
     noStroke();

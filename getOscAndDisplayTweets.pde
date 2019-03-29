@@ -11,7 +11,15 @@ int sendPort = 8001;
 
 int startIndex = 0;
 RectText[] tweets;
+RectText title;
 final int tweetsNum = 30;
+
+final color baseColor = color(0, 172, 237);
+
+final int pT = 30;
+final int pR = 80;
+final int pB = 30;
+final int pL = 30;
 
 void setup() {
   //size(400,400);
@@ -24,21 +32,41 @@ void setup() {
   
   for(int i = 0; i < tweetsNum; i++){
     tweets[i] = new RectText();
-    tweets[i].setColor(color(30), color(random(230, 255), random(230, 255), random(230, 255), 160), color(10));
-    tweets[i].setup(30, 50, 30, 30);/*float pT, float pR, float pB, float pL*/
+    tweets[i].setColor(color(30), color(random(230, 255), random(230, 255), random(230, 255), 160), baseColor);
+    tweets[i].setup(pT, pR, pB, pL);/*float pT, float pR, float pB, float pL*/
   }
+  
+  title = new RectText();
+  title.setColor(color(255), baseColor, baseColor);
+  title.setup(30, 30, 30, 30);
+  title.setTextSize(96); 
+  title.setText("#ほしまるまつ");
 }
 
 
 void draw() {
   background(255);
-  float y = 30;
-  int wTextArea = 1706-900-50-30+200;
-  int xPos = 1050 + 50 + 500;
+  float y = 400;
+  int wTextArea = width - 750;
+  int xPos = 500;
+  int winOfRect = 30;
+  int intervalOfRectAndRect = 20;
+  
+  title.update(1600);
+  title.draw(50, 80);
+  
+  
   for(int i = 0; i < tweetsNum; i++){
+    float tmpY = y;
     tweets[i].update(wTextArea);
     tweets[i].forceSetMaxW(wTextArea);
     y = tweets[i].draw(xPos, y);
+    int sW = tweets[i].getStrokeWeight();
+    fill(baseColor);
+    //ellipse(xPos - pR, tmpY - pB, 10, 10);
+    rect(xPos - winOfRect - pR, tmpY - pB - sW, winOfRect, y - tmpY + sW*2);
+    
+    y += intervalOfRectAndRect;
   }
 }
 
@@ -59,7 +87,7 @@ void oscEvent(OscMessage theOscMessage) {
           tweets[i].setColor(tweets[i - 1].fontColor, tweets[i - 1].backgroundColor, tweets[i - 1].borderColor);
         }
         tweets[0].setText(t);
-        tweets[0].setColor(color(30), color(random(230, 255), random(230, 255), random(230, 255), 160), color(10));
+        tweets[0].setColor(color(30), color(random(230, 255), random(230, 255), random(230, 255), 160), baseColor);
       }
       //allTexts = append(allTexts, t);
     }
