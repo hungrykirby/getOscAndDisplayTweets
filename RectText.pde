@@ -44,7 +44,7 @@ class RectText {
   
   void setText(String _t){
     /*文章を挿入する関数*/
-    t = _t.replace("\n\n", "\n");
+    t = _t.replaceAll("\n+", "\n");
   }
   
   void setTextSize(int _ts){
@@ -63,6 +63,10 @@ class RectText {
     fontColor = _fontColor;
     backgroundColor = _backgroundColor;
     borderColor = _borderColor;
+  }
+  
+  color getBGColor(){
+    return backgroundColor;
   }
   
   String getText(){

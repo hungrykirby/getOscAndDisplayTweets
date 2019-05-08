@@ -20,6 +20,7 @@ final int pT = 30;
 final int pR = 80;
 final int pB = 30;
 final int pL = 30;
+PImage twitterIcon;
 
 void setup() {
   //size(400,400);
@@ -27,6 +28,8 @@ void setup() {
   frameRate(25);
   oscP5 = new OscP5(this,receivePort);
   myRemoteLocation = new NetAddress(sendIP,sendPort);
+  twitterIcon = loadImage("Twitter_Social_Icon_Circle_Color.png");
+  imageMode(CENTER);
   
   tweets = new RectText[tweetsNum];
   
@@ -53,13 +56,14 @@ void draw() {
   int xPos = 500;
   int winOfRect = 30;
   int intervalOfRectAndRect = 20;
+  int dCircleLeft = 120;
   
   int xLine = 150;
   int wLine = 10;
   
   title.setTextSize(96);
   title.update(1600);
-  float titleY = title.draw(50, 80);
+  float titleY = title.draw(80, 80);
   
   fill(baseColor);
   rect(xLine, titleY - 30, wLine, height - titleY + 30);
@@ -70,11 +74,19 @@ void draw() {
     tweets[i].update(wTextArea);
     tweets[i].forceSetMaxW(wTextArea);
     fill(baseColor);
-    ellipse(xLine + wLine/2, tmpY + 20, 100, 100);
+    ellipse(xLine + wLine/2, tmpY + 20, dCircleLeft, dCircleLeft);
+    image(twitterIcon, xLine + wLine/2, tmpY + 20, dCircleLeft, dCircleLeft);  
+    
     tweets[i].setTextSize(48);
     y = tweets[i].draw(xPos, y);
     int sW = tweets[i].getStrokeWeight();
-    fill(baseColor);
+    color bgc = tweets[i].getBGColor();
+    float _hue = hue(bgc);
+    float _s = saturation(bgc);
+    float _b = brightness(bgc);
+    colorMode(HSB);
+    fill(color(_hue, _s + 50.0, _b));
+    colorMode(RGB);
     //ellipse(xPos - pR, tmpY - pB, 10, 10);
     rect(xPos - winOfRect - pR, tmpY - pB - sW, winOfRect, y - tmpY + sW*2);
     
@@ -102,12 +114,17 @@ void oscEvent(OscMessage theOscMessage) {
         }
         tweets[0].setTextSize(48);
         tweets[0].setText(t);
-        tweets[0].setColor(color(30), color(random(230, 255), random(230, 255), random(230, 255), 160), baseColor);
+        color textBoxColor = color(random(230, 255), random(230, 255), random(230, 255), 160);
+        tweets[0].setColor(color(30), textBoxColor, textBoxColor);
       }
       //allTexts = append(allTexts, t);
     }
     catch(UnsupportedEncodingException e) {
         e.printStackTrace();  
     }
+  }
+  if(theOscMessage.checkAddrPattern("/created_at")){
+   String ca = theOscMessage.get(0).stringValue();
+    println(ca);
   }
 }
