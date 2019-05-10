@@ -43,9 +43,9 @@ void setup() {
   title = new RectText();
   title.setColor(color(255), baseColor, baseColor);
   title.setup(30, 30, 30, 30);
-  title.setTextSize(96); 
-  //title.setText("#ほしまるまつ");
-  title.setText("プレミアムフライデー");
+  title.setTextSize(120); 
+  title.setText("#ほしまるまつ");
+  //title.setText("プレミアムフライデー");
 }
 
 
@@ -61,7 +61,7 @@ void draw() {
   int xLine = 150;
   int wLine = 10;
   
-  title.setTextSize(96);
+  title.setTextSize(120);
   title.update(1600);
   float titleY = title.draw(80, 80);
   
