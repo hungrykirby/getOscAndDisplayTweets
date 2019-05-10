@@ -117,11 +117,13 @@ class RectText {
     * 一文字ずつ見て行って、テキスト枠を幅を超えるときそこに改行を入れて、枠からはみ出さないようにする
     * 戻り値はStringList型なので、update関数内で改行文字列に変更している。
     */
+    textSize(tS);
     StringList a = new StringList();
     float w = 0;
     int i = 0;
     while (i < s.length()) {
       char c = s.charAt(i);
+      println(c);
       String cc = "" + c;
       w += textWidth(cc);
       if(c == '\n'){
