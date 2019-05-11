@@ -44,7 +44,7 @@ class RectText {
   
   void setText(String _t){
     /*文章を挿入する関数*/
-    t = _t.replaceAll("\n+", "\n");
+    t = _t;
   }
   
   void setTextSize(int _ts){
@@ -84,8 +84,11 @@ class RectText {
   }
   
   void update(float w){
+    textSize(tS);
     maxWidth = calcMaxW(t, w);
+    kaigyoCount = 1;
     sl = wordWrap(t, maxWidth);
+    kaigyoCount = kaigyoCount + countStringInString(t, "\n"); //文章で新しく作った改行＋もとからある改行の数
     numLines = sl.size();
     textModified = "";
     for(int i = 0; i < numLines; i++){
@@ -104,12 +107,12 @@ class RectText {
     th = textAscent() + textDescent();
     le = 0.5;
     textLeading(th+le);
-    rect(xPos - paddingRight, yPos - paddingTop, maxWidth + paddingRight + paddingLeft, (th+le)*(numLines+kaigyoCount) + paddingTop + paddingButtom);
+    rect(xPos - paddingRight, yPos - paddingTop, maxWidth + paddingRight + paddingLeft, (th+le)*(kaigyoCount) + paddingTop + paddingButtom);
     noStroke();
     fill(fontColor);
     text(textModified, xPos, yPos);
     
-    return (th+le)*(numLines+kaigyoCount) + paddingButtom + paddingTop + yPos; //Buttom
+    return (th+le)*(kaigyoCount) + paddingButtom + paddingTop + yPos; //Buttom
   }
   
   StringList wordWrap(String s, float mW) {
@@ -123,7 +126,7 @@ class RectText {
     int i = 0;
     while (i < s.length()) {
       char c = s.charAt(i);
-      println(c);
+      //println(c);
       String cc = "" + c;
       w += textWidth(cc);
       if(c == '\n'){
@@ -132,7 +135,7 @@ class RectText {
         s = s.substring(i + 1, s.length());
         i = 1;
         w = 0;
-        kaigyoCount = 0;
+        //kaigyoCount += 1;
       }else{
         if (w > mW) {
           String sub = s.substring(0, i);
@@ -140,6 +143,7 @@ class RectText {
           s = s.substring(i ,s.length());
           i = 0;
           w = 0;
+          kaigyoCount += 1;
         } else {
           i++;
         }
@@ -150,6 +154,7 @@ class RectText {
   }
   
   float calcMaxW(String _t, float mW){
+    textSize(tS);
     float f = 0;
     if(textWidth(_t) > mW) f = mW;
     else f = textWidth(_t);

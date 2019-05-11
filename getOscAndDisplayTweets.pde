@@ -44,14 +44,15 @@ void setup() {
   title.setColor(color(255), baseColor, baseColor);
   title.setup(30, 30, 30, 30);
   title.setTextSize(120); 
-  title.setText("#ほしまるまつ");
+  //title.setText("#ほしまるまつ");
   //title.setText("プレミアムフライデー");
+  title.setText("名探偵ピカチュウ");
 }
 
 
 void draw() {
   background(255);
-  float y = 400;
+  float y = 350;
   int wTextArea = width - 750;
   int xPos = 500;
   int winOfRect = 30;
@@ -61,7 +62,6 @@ void draw() {
   int xLine = 150;
   int wLine = 10;
   
-  title.setTextSize(120);
   title.update(1600);
   float titleY = title.draw(80, 80);
   
@@ -77,7 +77,6 @@ void draw() {
     ellipse(xLine + wLine/2, tmpY + 20, dCircleLeft, dCircleLeft);
     image(twitterIcon, xLine + wLine/2, tmpY + 20, dCircleLeft, dCircleLeft);  
     
-    tweets[i].setTextSize(48);
     y = tweets[i].draw(xPos, y);
     int sW = tweets[i].getStrokeWeight();
     color bgc = tweets[i].getBGColor();
@@ -106,7 +105,7 @@ void oscEvent(OscMessage theOscMessage) {
       String t = new String(bytes, "UTF-8");
       String typeTagStr = theOscMessage.typetag();
       t = t.substring(t.indexOf(typeTagStr) + typeTagStr.length());
-      println("Tweet:"+t);
+      //println("Tweet:"+t);
       if(startIndex == 0){
         for(int i = tweets.length - 1; i > 0; i--){
           tweets[i].setText(tweets[i - 1].getText());
