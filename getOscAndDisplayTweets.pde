@@ -1,29 +1,36 @@
+//必要なライブラリのインストール。OSC用のを入れています。
 import oscP5.*;
 import netP5.*;
 import java.io.UnsupportedEncodingException; //エラーを出すために必要なやつ
 
+
+//OSC通信の準備---
 OscP5 oscP5;
 NetAddress myRemoteLocation;
 
 int receivePort = 8002;
 String sendIP = "127.0.0.1";
 int sendPort = 8001;
+//---
 
-int startIndex = 0;
-RectText[] tweets;
-RectText title;
+//各種パラメータの設定---
+int startIndex = 0; //今のところあまり意味はない
+RectText[] tweets; //ツイートを格納するClassの配列を作成
+RectText title; //タイトル部分
 final int tweetsNum = 30;
 
+//Twitterの色
 final color baseColor = color(0, 172, 237);
 
+//ツイート枠のpadding(CSSでいこうところの)。実際少しずれたりするので、要調整
 final int pT = 30;
 final int pR = 80;
 final int pB = 30;
 final int pL = 30;
-PImage twitterIcon;
+PImage twitterIcon; //Twitterの鳥画像。ユーザごとのアイコンを出したい場合にはこの辺を細工してください。
+//---
 
 void setup() {
-  //size(400,400);
   fullScreen();
   frameRate(25);
   oscP5 = new OscP5(this,receivePort);
@@ -44,9 +51,7 @@ void setup() {
   title.setColor(color(255), baseColor, baseColor);
   title.setup(30, 30, 30, 30);
   title.setTextSize(120); 
-  //title.setText("#ほしまるまつ");
-  //title.setText("プレミアムフライデー");
-  title.setText("名探偵ピカチュウ");
+  title.setText("ここにタイトルとして表示したい文言を記入する。");
 }
 
 
@@ -100,7 +105,7 @@ void oscEvent(OscMessage theOscMessage) {
   print("### received an osc message.");
   println(" addrpattern: "+theOscMessage.addrPattern());
   if(theOscMessage.checkAddrPattern("/text")==true) {
-    byte[] bytes = theOscMessage.getBytes();
+    byte[] bytes = theOscMessage.getBytes(); //日本語がそのままだと受信できないので、対策している。なおこれだと絵文字は取れない
     try {
       String t = new String(bytes, "UTF-8");
       String typeTagStr = theOscMessage.typetag();

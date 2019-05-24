@@ -48,6 +48,7 @@ class RectText {
   }
   
   void setTextSize(int _ts){
+    //文字サイズを指定している。
     tS = _ts;
     textSize(tS);
     th = textAscent() + textDescent();
@@ -75,7 +76,7 @@ class RectText {
   }
   
   int getStrokeWeight(){
-    return sW;
+    return sW; //適時追加しているが、これとかいらんだろ。
   }
   
   void setup(float pT, float pR, float pB, float pL){
@@ -84,6 +85,8 @@ class RectText {
   }
   
   void update(float w){
+    //文字列を成型している。
+    //適切な位置に改行をはさんだりするのはこの関数の役目
     textSize(tS);
     maxWidth = calcMaxW(t, w);
     kaigyoCount = 1;
@@ -96,9 +99,15 @@ class RectText {
     }
   }
   void forceSetMaxW(float w){
+    //昔バグがあったので使ったが、今は使っていない。
     maxWidth = w;
   }
-  float draw(float x, float y){ /*xとyを開始点として文字を書く*/
+  float draw(float x, float y){
+    /*
+    xとyを開始点として文字を書く
+    返り値でテキスト枠下のy座標を返している。
+    forループするの時に、次のループに前の返り値を渡せばきれいに並ぶ(はず)
+    */
     xPos = x; yPos = y;
     stroke(borderColor);
     strokeWeight(sW);
